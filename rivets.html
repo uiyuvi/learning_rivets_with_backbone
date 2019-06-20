@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="description" content="Rivets Exercises" />
+  <script src="js/jquery.js"></script>
+  <script src="js/underscore.js"></script>
+  <script src="js/backbone.js"></script>
+  <script src="js/underscore-deepExtend.js"></script>
+  <script src="js/backbone-deep-model.js"></script>
+  <script src="js/rivets.js"></script>
+  <meta charset=utf-8 />
+  <title>Rivets Exercises</title>
+  <style>
+    div {
+      margin: 40px 0 0 0;
+    }
+
+    div span {
+      color: blue;
+    }
+
+    table {
+      border-collapse: collapse;
+    }
+
+    td,
+    th {
+      border: 1px solid;
+      padding: 4px;
+    }
+    .styleddate{
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <pre>
+  /**
+  *    Rivets.js with backbone exercises
+  */
+
+  // ******************************************
+  // Exercise 1
+  //
+  // - Create a Model called 'context'.
+  // - Assign a JavaScript object that has a
+  //   property 'spacecraft' with value 
+  //   'Pioneer' to 'context'.
+  // - Use rivets to bind this object as 
+  //   context to the div with id: 'exercise1'
+  // - Verify that the spacecraft variable has
+  //   been replaced with 'Pioneer' in the 
+  //   output.
+  // ******************************************
+
+  // ******************************************
+  // Exercise 2
+  //
+  // - Create a Deep Model called 'context'.
+  // - Assign a JavaScript object that has a
+  //   property 'spacecraft' with value 
+  //   'Pioneer' and 'nested.spacecraft.name' with value 'nested pioneer' to 'context'.
+  // - Use rivets to bind this object as 
+  //   context to the div with id: 'exercise2'
+  // - Verify that the spacecraft variable has
+  //   been replaced with 'Pioneer' in the 
+  //   output.
+  // ******************************************
+
+  // ******************************************
+  // Exercise 3
+  //
+  // - Change the value of 'spacecraft' in 
+  //   the context variable to something else.
+  // - Verify that the output is also changed.
+  // ******************************************
+
+  // ******************************************
+  // Exercise 4
+  //
+  // - You are given the code below.
+  // - Create an input field in the DIV with id
+  //   'exercise3' (in the HTML).
+  // - Bind the input field to the 'spacecraft'
+  //   property
+  // - Verify that when the input changes (after
+  //   you click outside of it to trigger a 
+  //   'blur'), the text also changes.
+  // ******************************************
+
+
+  // ******************************************
+  // Exercise 5
+  //
+  // - You are given the code below.
+  // - Modify the DIV with id 'exercise4'
+  //   to print a row in the table for each
+  //   mission.
+  // ******************************************
+
+
+  // ******************************************
+  // Exercise 5
+  //
+  // - You are given the code below.
+  // - Create a formatter called 'date' to 
+  //   convert milliseconds since epoch to a
+  //   UTC date string. 
+  // - Create this formatter BEFORE the code
+  //   below.
+  // - Modify the DIV with id 'exercise5' to
+  //   print a row in the table for each 
+  //   mission.
+  // - Use your formatter on the DATE values
+  //   to automatically convert the DATE millis
+  //   to a UTC date string. 
+  // ******************************************
+</pre>
+  <div id="exercise1">
+    <h3 data-rv-text="context.spacecraft">{spacecraft}</h3>
+    Beginning in 1973, several spacecraft have performed planetary flyby maneuvers that brought them within observation
+    range of Jupiter. The '<span data-rv-text="context.spacecraft"></span>' missions obtained the first close-up ...
+  </div>
+
+  <div id="exercise2">
+    <h3 data-rv-text="context.spacecraft">{spacecraft}</h3>
+    Beginning in 1973, several spacecraft have performed planetary flyby maneuvers that brought them within observation
+    range of Jupiter. The '<span data-rv-text="context.nested.spacecraft.name"></span>' missions obtained the first
+    close-up ...
+  </div>
+
+  <div id="exercise3">
+    <h3 data-rv-text="context.spacecraft">{spacecraft}</h3>
+    Six years later, the '<span data-rv-text="context.spacecraft"></span>' missions vastly improved the understanding of
+    the Galilean moons and discovered
+    Jupiter's rings.
+    <!-- EXERCISE 3 SOLUTION START -->
+    <input data-rv-value="context.spacecraft">
+    <!-- EXERCISE 3 SOLUTION END -->
+  </div>
+
+  <div id="exercise4">
+    <table>
+      <tr>
+        <th>Spacecraft</th>
+        <th>Date</th>
+        <th>Distance</th>
+      </tr>
+      <!-- EXERCISE 4 SOLUTION START -->
+      <tr data-rv-each-mission="missions.mission">
+        <td data-rv-text="mission:spacecraft">{mission.spacecraft}</td>
+        <td data-rv-text="mission:date">{mission.date}</td>
+        <td data-rv-text="mission:distance"></td>
+      </tr>
+      <!-- EXERCISE 4 SOLUTION END -->
+    </table>
+  </div>
+
+  <div id="exercise5">
+    <table>
+      <tr>
+        <th>Spacecraft</th>
+        <th>Date</th>
+        <th>Distance</th>
+      </tr>
+      <!-- EXERCISE 5 SOLUTION START -->
+      <tr data-rv-each-mission="missions.mission">
+        <td data-rv-text="mission:spacecraft">{mission.spacecraft}</td>
+        <td data-rv-text="mission:date | date">{mission.date}</td>
+        <td data-rv-text="mission:distance"></td>
+      </tr>
+      <!-- EXERCISE 5 SOLUTION END -->
+    </table>
+  </div>
+
+  <div id="exercise6">
+      <table>
+        <tr>
+          <th>Spacecraft</th>
+          <th>Date</th>
+          <th>Distance</th>
+        </tr>
+        <!-- EXERCISE 6 SOLUTION START -->
+        <tr data-rv-each-mission="missions.mission">
+          <td data-rv-text="mission:spacecraft">{mission.spacecraft}</td>
+          <td data-rv-date="mission:date">{mission.date}</td>
+          <td data-rv-text="mission:distance"></td>
+        </tr>
+        <!-- EXERCISE 6 SOLUTION END -->
+      </table>
+    </div>
+
+
+  <script type="text/javascript">
+    rivets.configure({
+      prefix: 'rv'
+    });
+
+    // Rivets.js to backbone glue code
+    // source: https://github.com/mikeric/rivets/issues/57
+
+    rivets.configure({
+      adapter: {
+        subscribe: function (obj, keypath, callback) {
+          if (obj instanceof Backbone.Collection) {
+            obj.on('add remove reset', function () {
+              callback(obj[keypath]);
+            });
+          } else {
+            callback.wrapped = function (model, value) {
+              return callback(value);
+            };
+            return obj.on("change:" + keypath, callback.wrapped);
+          }
+        },
+        unsubscribe: function (obj, keypath, callback) {
+          if (obj instanceof Backbone.Collection) {
+            obj.off('add remove reset', function () {
+              callback(obj[keypath]);
+            });
+          } else {
+            return obj.off("change:" + keypath, callback.wrapped);
+          }
+        },
+        read: function (obj, keypath) {
+          if (obj instanceof Backbone.Collection) {
+            return obj.models;
+          } else {
+            return obj.get(keypath);
+          }
+        },
+        publish: function (obj, keypath, value) {
+          if (obj instanceof Backbone.Collection) {
+            obj.models = value;
+          } else {
+            obj.set(keypath, value);
+          }
+        }
+      }
+    });
+    /**
+    *    Rivets.js with backbone exercises
+    */
+
+    // ******************************************
+    // Exercise 1
+    //
+    // - Create a Model called 'context'.
+    // - Assign a JavaScript object that has a
+    //   property 'spacecraft' with value 
+    //   'Pioneer' to 'context'.
+    // - Use rivets to bind this object as 
+    //   context to the div with id: 'exercise1'
+    // - Verify that the spacecraft variable has
+    //   been replaced with 'Pioneer' in the 
+    //   output.
+    // ******************************************
+    var context = new Backbone.Model({
+      spacecraft: 'Pioneer'
+    });
+    rivets.bind($('#exercise1'), { context: context });
+
+    // ******************************************
+    // Exercise 2
+    //
+    // - Create a Deep Model called 'context'.
+    // - Assign a JavaScript object that has a
+    //   property 'spacecraft' with value 
+    //   'Pioneer' and 'nested.spacecraft.name' with value 'nested pioneer' to 'context'.
+    // - Use rivets to bind this object as 
+    //   context to the div with id: 'exercise2'
+    // - Verify that the spacecraft variable has
+    //   been replaced with 'Pioneer' in the 
+    //   output.
+    // ******************************************
+    var context = new Backbone.DeepModel({
+      spacecraft: 'Pioneer',
+      nested: {
+        spacecraft: {
+          name: 'nested pioneer'
+        }
+      }
+    });
+    rivets.bind($('#exercise2'), { context: context });
+
+    // ******************************************
+    // Exercise 3
+    //
+    // - Change the value of 'spacecraft' in 
+    //   the context variable to something else.
+    // - Verify that the output is also changed.
+    // ******************************************
+    context.set('spacecraft', 'New Horizons');
+
+    // ******************************************
+    // Exercise 4
+    //
+    // - You are given the code below.
+    // - Create an input field in the DIV with id
+    //   'exercise3' (in the HTML).
+    // - Bind the input field to the 'spacecraft'
+    //   property
+    // - Verify that when the input changes (after
+    //   you click outside of it to trigger a 
+    //   'blur'), the text also changes.
+    // ******************************************
+    var context3 = new Backbone.Model({
+      spacecraft: 'Voyager'
+    });
+    rivets.bind($('#exercise3'), { context: context3 });
+
+
+    // ******************************************
+    // Exercise 5
+    //
+    // - You are given the code below.
+    // - Modify the DIV with id 'exercise4'
+    //   to print a row in the table for each
+    //   mission.
+    // ******************************************
+    var missions = new Backbone.Model({
+      mission: [
+        {
+          spacecraft: 'Pioneer 10',
+          date: 123721200000,
+          distance: '130,000 km'
+        },
+        {
+          spacecraft: 'Pioneer 11',
+          date: 155343600000,
+          distance: '34,000 km'
+        }
+      ]
+    });
+    rivets.bind($('#exercise4'), {
+      missions: missions
+    });
+
+
+    // ******************************************
+    // Exercise 5
+    //
+    // - You are given the code below.
+    // - Create a formatter called 'date' to 
+    //   convert milliseconds since epoch to a
+    //   UTC date string. 
+    // - Create this formatter BEFORE the code
+    //   below.
+    // - Modify the DIV with id 'exercise5' to
+    //   print a row in the table for each 
+    //   mission.
+    // - Use your formatter on the DATE values
+    //   to automatically convert the DATE millis
+    //   to a UTC date string. 
+    // ******************************************
+    rivets.formatters.date = function (value) {
+      var date = new Date();
+      date.setTime(value);
+      return date.toUTCString();
+    };
+
+    rivets.bind($('#exercise5'), {
+      missions: missions
+    });
+
+    // ******************************************
+    // Exercise 6
+    //
+    // - You are given the code below.
+    // - Create a binder called 'styleddate' to add class 'styleddate' if year is 1974
+    // - Modify the DIV with id 'exercise6' to
+    //   print a row in the table for each 
+    //   mission.
+    // - Use your binder on the DATE values
+    //   to style the date
+    // ******************************************
+    rivets.binders.date = function (el,value) {
+      var date = new Date();
+      date.setTime(value);
+      $(el).removeClass('styleddate');
+      if(date.getFullYear() == '1974'){
+        $(el).addClass('styleddate');
+      }
+      $(el).text(date.toUTCString());
+    };
+
+    rivets.bind($('#exercise6'), {
+      missions: missions
+    });
+
+
+
+
+  </script>
+</body>
+
+</html>
